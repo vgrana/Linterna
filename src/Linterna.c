@@ -15,7 +15,7 @@ void linternaInit(LinternaModel * linterna, unsigned char estado) {
 	initTiempoEncendidoL(linterna);
 }
 
-void setEstadoLinterna(LinternaModel * model, unsigned char value) {
+void setEstadoLinterna(LinternaModel * model, EstadoLinterna value) {
 	model->estadoLinterna = value;
 }
 void initTiempoEncendidoL(LinternaModel * linterna) {
@@ -31,12 +31,12 @@ unsigned char linternaHabilitada(LinternaModel * linterna) {
 }
 
 void linternaEncendida(LinternaModel * model) {
-	setEstadoLinterna(model, 1);
+	setEstadoLinterna(model, PRENDIDA);
 	initTiempoEncendidoL(model);
 }
 
 void linternaApagada(LinternaModel * model) {
-	setEstadoLinterna(model, 0);
+	setEstadoLinterna(model, APAGADA);
 }
 void linterna_toggle(LinternaModel * model) {
 	setEstadoLinterna(model, !model->estadoLinterna);
@@ -45,21 +45,18 @@ void linterna_toggle(LinternaModel * model) {
 void linterna_upDate(LinternaModel * linterna) {
 	switch (linterna->estadoLinterna) {
 	case APAGADA: {
-		printf("estoy  en apagada\n");
-		if (linterna->estadoLinterna == 1) {
+	//	printf("estoy  en apagada\n");
+	//	if (linterna->estadoLinterna == APAGADA) {
 	//		initDelayCounter9(linterna);
-		}
+	//	}
 		break;
 	}
 	case PRENDIDA: {
 		printf("vale\n");
-		if (linterna->estadoLinterna == 0) {
 				if (delayRead(&linterna->tiempoDeEncendido)) {
-					printf("tiempo encendido\n");
-					linternaEncendida(linterna);
-					initDelayCounter9(linterna);
-					printf("me voy para apagado, \n");
-			}
+		//			printf("tiempo encendido\n");
+		//			printf("me voy para apagado, \n");
+					linternaApagada(linterna);
 		}
 		break;
 	}

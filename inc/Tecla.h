@@ -11,7 +11,7 @@
 #include "sapi.h"
 
 typedef enum {
-	UP, FALLING, DOWN, RISING,
+	UP1, FALLING1, DOWN1, RISING1,
 } TeclaState;
 
 typedef void (*ButtonEventHandler)(void *);

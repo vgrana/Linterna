@@ -15,7 +15,7 @@ void tecla_init(Tecla * button, gpioMap_t gpio, void * model) {
 	button->gpio = gpio;
 	button->onPress = nullHandler;
 	button->onRelease = nullHandler;
-	button->teclaState = UP;
+	button->teclaState = UP1;
 	button->model = model;
 }
 
@@ -46,47 +46,47 @@ void tecla_update(Tecla * tecla) {
 	bool_t pressed = !readed;
 	switch(tecla->teclaState) {
 
-		case UP : {
+		case UP1 : {
 			if(pressed) {
-				changeState(tecla, FALLING);
+				changeState(tecla, FALLING1);
 				initDelayCounter(tecla);
 			}
 			break;
 		};
-		case DOWN : {
+		case DOWN1 : {
 			if(!pressed) {
-				changeState(tecla, RISING);
+				changeState(tecla, RISING1);
 				initDelayCounter(tecla);
 			}
 			break;
 		};
-		case FALLING : {
+		case FALLING1 : {
 			if(delayRead(&tecla->delay)) {
 				if(pressed) {
-					changeState(tecla, DOWN);
+					changeState(tecla, DOWN1);
 					tecla->onPress(tecla->model);
 				}
 				else {
-					changeState(tecla, UP);
+					changeState(tecla, UP1);
 				}
 			}
 			break;
 		}
-		case RISING : {
+		case RISING1 : {
 			if(delayRead(&tecla->delay)) {
 				if(!pressed) {
-					changeState(tecla, UP);
+					changeState(tecla, UP1);
 					tecla->onRelease(tecla->model);
 				}
 				else {
-					changeState(tecla, DOWN);
+					changeState(tecla, DOWN1);
 				}
 			}
 			break;
 		}
 		default : {
 			//error
-			changeState(tecla, pressed ? DOWN : UP);
+			changeState(tecla, pressed ? DOWN1 : UP1);
 		}
 
 	}

@@ -83,7 +83,6 @@ void sensor_actualizar5(Sensor * sensor, int8_t direccion, bool_t estadoInicial)
 
 				cambioEstado(sensor, Up);
 				initTiempoEntreMediciones(sensor);
-//				sensor->sinMovimiento(sensor->model);
 				sensor->enMovimiento(sensor->model);
 				printf(
 						"estoy en movido  estadoActualX %f ,últimoCambioX: %f ,variaciónX%f \n",
@@ -111,7 +110,6 @@ void sensor_actualizar5(Sensor * sensor, int8_t direccion, bool_t estadoInicial)
 
 				cambioEstado(sensor, Up);
 				initTiempoEntreMediciones(sensor);
-//				sensor->enMovimiento(sensor->model);
 				sensor->sinMovimiento(sensor->model);
 				printf("estoy en estático\n ");
 				printf(

@@ -12,14 +12,13 @@ void initDelayCounter9(LinternaModel* linterna);
 
 void linternaInit(LinternaModel * linterna, unsigned char estado) {
 	linterna->estadoLinterna = estado;
-	initTiempoEncendidoL(linterna);
 }
 
 void setEstadoLinterna(LinternaModel * model, EstadoLinterna value) {
 	model->estadoLinterna = value;
 }
 void initTiempoEncendidoL(LinternaModel * linterna) {
-	delayInit(&linterna->tiempoDeEncendido, 50);
+	delayInit(&linterna->tiempoDeEncendido, 500);
 }
 
 void initDelayCounter9(LinternaModel* linterna) {
@@ -45,17 +44,10 @@ void linterna_toggle(LinternaModel * model) {
 void linterna_upDate(LinternaModel * linterna) {
 	switch (linterna->estadoLinterna) {
 	case APAGADA: {
-	//	printf("estoy  en apagada\n");
-	//	if (linterna->estadoLinterna == APAGADA) {
-	//		initDelayCounter9(linterna);
-	//	}
 		break;
 	}
 	case PRENDIDA: {
-		printf("vale\n");
 				if (delayRead(&linterna->tiempoDeEncendido)) {
-		//			printf("tiempo encendido\n");
-		//			printf("me voy para apagado, \n");
 					linternaApagada(linterna);
 		}
 		break;

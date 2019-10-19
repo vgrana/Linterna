@@ -7,10 +7,10 @@
 #include "sapi.h"
 #include "Linterna.h"
 #include "LinternaRender.h"
-//#include "Sensor.h"
+#include "Sensor.h"
 #include "Tecla.h"
 #define TIEMPO 10
-//MPU9250_address_t addr = MPU9250_ADDRESS_0;
+MPU9250_address_t addr = MPU9250_ADDRESS_0;
 
 
 void onMovimento(void * linterna) {
@@ -18,17 +18,9 @@ void onMovimento(void * linterna) {
 //initTiempoEncendidoL(linterna);
 		LinternaModel * model = (LinternaModel *) linterna;
 		linternaEncendida(linterna);
-	//	delayInit(&linterna, TIEMPO);
-//	((LinternaModel *) linterna)->estadoLinterna = PRENDIDA;
-//	((LinternaModel *) linterna)->estadoLinterna = APAGADA;
-//	linterna_toggle(model);
 }
 
 void sinMovimiento(void * lint) {
-	//Maneras diferentes de castear!!
-//	LinternaModel * linternaModel = (LinternaModel *) lint;
-//		linternaApagada(linternaModel);
-//	((LinternaModel *) lint)->estadoLinterna = PRENDIDA;
 }
 
 int main(void) {
@@ -40,12 +32,12 @@ int main(void) {
 //int8_t mpu9250Init( MPU9250_address_t address );
 
 	LinternaRender linternaRender;
-//	Sensor sensor;
+	Sensor sensor;
 	LinternaModel linternaModel;
 	Tecla tecla;
 
 	int8_t status;
-	//status = mpu9250Init(addr);
+	status = mpu9250Init(addr);
 
 	float sensibilidadSensor = 0.2;
 	printf("Inicializando IMU MPU9250...\r\n");
@@ -61,15 +53,13 @@ int main(void) {
 	linternaInit(&linternaModel, APAGADA);//PRENDIDA
 	linternaRender_init(&linternaRender, &linternaModel, GPIO0);
 
-//	sensorInitS(&sensor, &linternaModel, status, sensibilidadSensor, mpuRead);
-//	sensor_sinMovimiento(&sensor,sinMovimiento);
-//	sensor_conMovimiento(&sensor,onMovimento);
-//	sensor_sinMovimiento(&sensor,sinMovimento);
-//	sensor_conMovimiento(&sensor,sinMovimiento);
+	sensorInitS(&sensor, &linternaModel, status, sensibilidadSensor, mpuRead);
+	sensor_sinMovimiento(&sensor,sinMovimiento);
+	sensor_conMovimiento(&sensor,onMovimento);
 
 	while (TRUE) {
 		tecla_update(&tecla);
-	//	sensor_actualizar5(&sensor, status, mpuRead);
+		sensor_actualizar5(&sensor, status, mpuRead);
 		linterna_upDate(&linternaModel);
 		linternaRender_update(&linternaRender);
 		delay(1);

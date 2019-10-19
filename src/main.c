@@ -14,8 +14,6 @@ MPU9250_address_t addr = MPU9250_ADDRESS_0;
 
 
 void onMovimento(void * linterna) {
-//	linternaEncendida(linterna);
-//initTiempoEncendidoL(linterna);
 		LinternaModel * model = (LinternaModel *) linterna;
 		linternaEncendida(linterna);
 }

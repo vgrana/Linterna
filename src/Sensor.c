@@ -29,10 +29,10 @@ void sensorInitS(Sensor * sensor, void * model, int8_t direccionInicial,
 }
 
 void sensor_conMovimiento(Sensor * sensor, EventHandler event) {
-	sensor->sinMovimiento = event;
+	sensor->enMovimiento = event;
 }
 void sensor_sinMovimiento(Sensor * sensor, EventHandler event) {
-	sensor->enMovimiento = event;
+	sensor->sinMovimiento = event;
 }
 void nullHandler1(void * model) {
 }
@@ -41,7 +41,7 @@ void cambioEstado(Sensor *sensor, EstadoSensor estadoSensor) {
 	sensor->estadoSensor = estadoSensor;
 }
 void initTiempoEntreMediciones(Sensor * sensor) {
-	delayInit(&sensor->tiempoEntreMedicion, 600);
+	delayInit(&sensor->tiempoEntreMedicion, 100);
 }
 
 void sensor_actualizar5(Sensor * sensor, int8_t direccion, bool_t estadoInicial) {
@@ -83,8 +83,8 @@ void sensor_actualizar5(Sensor * sensor, int8_t direccion, bool_t estadoInicial)
 
 				cambioEstado(sensor, Up);
 				initTiempoEntreMediciones(sensor);
+//				sensor->sinMovimiento(sensor->model);
 				sensor->enMovimiento(sensor->model);
-
 				printf(
 						"estoy en movido  estadoActualX %f ,últimoCambioX: %f ,variaciónX%f \n",
 						estadoActualX, sensor->ultimoCambioX, variacionX);
@@ -111,6 +111,7 @@ void sensor_actualizar5(Sensor * sensor, int8_t direccion, bool_t estadoInicial)
 
 				cambioEstado(sensor, Up);
 				initTiempoEntreMediciones(sensor);
+//				sensor->enMovimiento(sensor->model);
 				sensor->sinMovimiento(sensor->model);
 				printf("estoy en estático\n ");
 				printf(
@@ -122,7 +123,7 @@ void sensor_actualizar5(Sensor * sensor, int8_t direccion, bool_t estadoInicial)
 						estadoActualY, sensor->ultimoCambioY, variacionY);
 
 				printf(
-						"estoy en estatico  estadoActualZ %f, últimoCambioZ %f, variaciónZ: %f \n \n",
+						"estoy en estático  estadoActualZ %f, últimoCambioZ %f, variaciónZ: %f \n \n",
 						estadoActualZ, sensor->ultimoCambioZ, variacionZ);
 
 			} else {

@@ -9,20 +9,24 @@
 #include "LinternaRender.h"
 #include "Sensor.h"
 #include "Tecla.h"
-
-
+#define TIEMPO 10
 MPU9250_address_t addr = MPU9250_ADDRESS_0;
 
-void onMovimento(void * linterna) {
-	((LinternaModel *)linterna)->estadoLinterna=PRENDIDA;
 
+void onMovimento(void * linterna) {
+//	linternaEncendida(linterna);
+//initTiempoEncendidoL(linterna);
+		LinternaModel * model = (LinternaModel *) linterna;
+	((LinternaModel *) linterna)->estadoLinterna = PRENDIDA;
+//	((LinternaModel *) linterna)->estadoLinterna = APAGADA;
+//	linterna_toggle(model);
 }
 
-void sinMovimiento(void *lint){
+void sinMovimiento(void * lint) {
 	//Maneras diferentes de castear!!
 //	LinternaModel * linternaModel = (LinternaModel *) lint;
 //		linternaApagada(linternaModel);
-	((LinternaModel *)lint)->estadoLinterna=APAGADA;
+//	((LinternaModel *) lint)->estadoLinterna = PRENDIDA;
 }
 
 int main(void) {
@@ -36,27 +40,34 @@ int main(void) {
 	LinternaRender linternaRender;
 	Sensor sensor;
 	LinternaModel linternaModel;
+	Tecla tecla;
 
 	int8_t status;
 	status = mpu9250Init(addr);
 
-	float sensibilidadSensor= 0.2;
+	float sensibilidadSensor = 0.2;
 	printf("Inicializando IMU MPU9250...\r\n");
 
 	bool_t mpuRead;
 	mpuRead = mpu9250Read();
 
-	linternaInit(&linternaModel, 1);
-	linternaRender_init(&linternaRender, &linternaModel, GPIO0);
-	sensorInitS(&sensor,&linternaModel, status,sensibilidadSensor,mpuRead);
-	sensor_conMovimiento(&sensor,onMovimento);
-	sensor_sinMovimiento(&sensor,sinMovimiento);
+	tecla_init(&tecla, TEC1, (void *) &linternaModel);
+	tecla_onPress(&tecla,onMovimento);
+	tecla_onRelease(&tecla,sinMovimiento);
 
+
+	linternaInit(&linternaModel, PRENDIDA);//PRENDIDA
+	linternaRender_init(&linternaRender, &linternaModel, GPIO0);
+
+	sensorInitS(&sensor, &linternaModel, status, sensibilidadSensor, mpuRead);
+	sensor_sinMovimiento(&sensor,sinMovimiento);
+	sensor_conMovimiento(&sensor,onMovimento);
 
 	while (TRUE) {
-		sensor_actualizar5(&sensor, status, mpuRead);
-		linternaRender_update(&linternaRender);
+		tecla_update(&tecla);
+//		sensor_actualizar5(&sensor, status, mpuRead);
 		linterna_upDate(&linternaModel);
+		linternaRender_update(&linternaRender);
 		delay(1);
 
 	}

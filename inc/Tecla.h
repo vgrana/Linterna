@@ -29,7 +29,7 @@ typedef struct Tecla {
 
 void tecla_init(Tecla * button , gpioMap_t gpio, void * model);
 
-void tecla_onPress(Tecla * button, void * model);
+void tecla_onPress(Tecla * button, ButtonEventHandler handler);
 void tecla_onRelease(Tecla * button, ButtonEventHandler handler);
 void tecla_update(Tecla * button);
 

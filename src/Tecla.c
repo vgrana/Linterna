@@ -23,8 +23,8 @@ void tecla_init(Tecla * button, gpioMap_t gpio, void * model) {
 void nullHandler(void * model){
 }
 
-void tecla_onPress(Tecla * button, void * model) {
-	button->onPress = model;
+void tecla_onPress(Tecla * button, ButtonEventHandler eventHandler) {
+	button->onPress = eventHandler;
 }
 
 void tecla_onRelease(Tecla * button, ButtonEventHandler eventHandler) {
